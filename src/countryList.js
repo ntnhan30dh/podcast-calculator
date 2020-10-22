@@ -126,19 +126,5 @@ class CountryList {
     ))
     return res;
   };
-
-  ratio = (bannerType, orientaion) => {
-    let res = [];
-    switch (bannerType) {
-      case "Paid social":
-        if (orientaion === "landscape") {
-          res = ["9:16"];
-        }
-        break;
-      default:
-        res = [];
-    }
-    return res;
-  };
 }
 export default CountryList;
