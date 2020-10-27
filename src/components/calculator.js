@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Dropdown, Input } from "semantic-ui-react";
 
-import CountryList from "./countryList";
-import Reach from "./aReach";
-import Payment from "./paymentModel";
+import CountryList from "../constants/countryList";
+import Reach from "../constants/aReach";
+import Payment from "../constants/paymentModel";
 
 const Calculator = () => {
   const countryList = new CountryList();
@@ -71,7 +71,7 @@ const Calculator = () => {
         onChange={(e, { value }) => setCountry(value)}
       />
       <h3>Reach</h3>
-      <h4>{reach}</h4>
+      {/* <h4>{reach}</h4> */}
       <Input onChange={(e, { value }) => setReach(value)} />
 
       <h3>
@@ -88,11 +88,11 @@ const Calculator = () => {
       </h3>
 
       <h3>Payment model</h3>
-      <h4>{paymentModel}</h4>
-      <h3>Payment number</h3>
-      <h4>
+      {/* <h4>{paymentModel}</h4> */}
+      {/* <h3>Payment number</h3> */}
+      {/* <h4>
         {country && paymentModel && payment.getPayment(paymentModel)[country]}
-      </h4>
+      </h4> */}
       <Dropdown
         placeholder="Payment model"
         // fluid
@@ -101,7 +101,7 @@ const Calculator = () => {
         onChange={(e, { value }) => setPaymentModel(value)}
       />
       <h3>Ad format</h3>
-      <h4>{adFormat}</h4>
+      {/* <h4>{adFormat}</h4> */}
       <Dropdown
         placeholder="Ad format"
         // fluid
@@ -112,7 +112,7 @@ const Calculator = () => {
         }
       />
       <h3>Number of spots</h3>
-      <h4>{spot}</h4>
+      {/* <h4>{spot}</h4> */}
       <Input onChange={(e, { value }) => handelSetSpot(value)} />
 
       <h2>
