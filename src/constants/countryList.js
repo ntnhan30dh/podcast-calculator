@@ -60,14 +60,8 @@ class CountryList {
         break;
       case "Nordics":
         names = [
-          "Austria",
-          "Bulgaria",
-          "Czech Republic",
           "Finland",
-          "Greece",
-          "Hungary",
           "Norway",
-          "Romania",
           "Sweden",
         ];
         break;
@@ -78,6 +72,13 @@ class CountryList {
           "Cyprus",
           "Montenegro",
           "Serbia",
+          "Austria",
+          "Bulgaria",
+          "Czech Republic",
+          "Greece",
+          "Hungary",
+          "Romania",
+
         ];
         break;
       default:
