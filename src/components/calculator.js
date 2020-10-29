@@ -122,7 +122,7 @@ const Calculator = () => {
       {paymentModel === "cpm" && (
         <Input onChange={(e, { value }) => setReach(value)} />
       )}
-      {!/^\d+$/.test(reach) && reach && (
+      {!/^[0-9.]*$/.test(reach) && reach && (
         <Label basic color="red" pointing="left">
           Please enter a number
         </Label>
@@ -155,7 +155,7 @@ const Calculator = () => {
       <Input onChange={(e, { value }) => setSpot(value)} />
       {!/^\d+$/.test(spot) && spot && (
         <Label basic color="red" pointing="left">
-          Please enter a number
+          Please enter a valid number
         </Label>
       )}
       <h2>

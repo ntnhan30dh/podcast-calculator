@@ -3,7 +3,9 @@ import Calculator from './components/calculator';
 import Login from './components/login';
 import Logout from './components/logout';
 import Auth from './constants/auth';
-import './App.css';
+import 'semantic-ui-css/semantic.min.css'
+import './App.scss';
+
 
 const auth = new Auth();
 const App =() =>{
