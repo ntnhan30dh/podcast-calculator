@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Dropdown, Input, Label } from "semantic-ui-react";
+import { Form, Dropdown, Input, Radio, Label } from "semantic-ui-react";
 
 import CountryList from "../constants/countryList";
 import Reach from "../constants/aReach";
@@ -10,14 +10,14 @@ const Calculator = () => {
   const aReach = new Reach();
   const payment = new Payment();
 
-  const payments = [
-    { key: "cpm", value: "cpm", text: "CPM" },
-    { key: "cpa", value: "cpa", text: "CPA" },
-  ];
-  const format = [
-    { key: "Host-read", value: "Host-read", text: "Host-read" },
-    { key: "pre-recorded", value: "pre-recorded", text: "pre-recorded" },
-  ];
+  // const payments = [
+  //   { key: "cpm", value: "cpm", text: "CPM" },
+  //   { key: "cpa", value: "cpa", text: "CPA" },
+  // ];
+  // const format = [
+  //   { key: "Host-read", value: "Host-read", text: "Host-read" },
+  //   { key: "pre-recorded", value: "pre-recorded", text: "pre-recorded" },
+  // ];
 
   let [region, setRegion] = useState(undefined);
   let [country, setCountry] = useState(undefined);
@@ -49,7 +49,7 @@ const Calculator = () => {
     minimumFractionDigits: 2,
   });
   return (
-    <div>
+    <Form>
       <h1>Calculator</h1>
       <h3> Region</h3>
       <Dropdown
@@ -89,13 +89,31 @@ const Calculator = () => {
       {/* <h4>
         {country && paymentModel && payment.getPayment(paymentModel)[country]}
       </h4> */}
-      <Dropdown
+      {/* <Dropdown
         placeholder="Payment model"
         // fluid
         selection
         options={payments}
         onChange={(e, { value }) => setPaymentModel(value)}
+      /> */}
+      <Form.Field>  
+      <Radio
+        label="CPM"
+        name="radioGroup"
+        value="cpm"
+        checked={paymentModel === "cpm"}
+        onChange={(e, { value }) => setPaymentModel(value)}
       />
+      </Form.Field>  
+      <Form.Field> 
+      <Radio
+        label="CPA"
+        name="radioGroup"
+        value="cpa"
+        checked={paymentModel === "cpa"}
+        onChange={(e, { value }) => setPaymentModel(value)}
+      />
+      </Form.Field>  
       {isChecking && !paymentModel && (
         <Label style={{ color: "red" }} basic color="red" pointing="left">
           please choose Payment model
@@ -103,15 +121,33 @@ const Calculator = () => {
       )}
       <h3>Ad format</h3>
       {/* <h4>{adFormat}</h4> */}
-      <Dropdown
+      {/* <Dropdown
         placeholder="Ad format"
-        // fluid
+        fluid
         selection
         options={format}
         onChange={(e, { value }) =>
           value === "Host-read" ? setAdFormat(1) : setAdFormat(0.8)
         }
+      /> */}
+      <Form.Field> 
+      <Radio
+        label="Host-read"
+        name="radioGroup1"
+        value="Host-read"
+        checked={adFormat === 1}
+        onChange={(e, { value }) => setAdFormat(1)}
       />
+      </Form.Field>  
+      <Form.Field> 
+      <Radio
+        label="pre-recorded"
+        name="radioGroup1"
+        value="pre-recorded"
+        checked={adFormat === 0.8}
+        onChange={(e, { value }) => setAdFormat(0.8)}
+      />
+      </Form.Field>  
       {isChecking && !adFormat && (
         <Label style={{ color: "red" }} basic color="red" pointing="left">
           please choose Ad format
@@ -162,7 +198,7 @@ const Calculator = () => {
         Estimated cost:{" "}
         {country && paymentModel && spot && adFormat && formatter.format(cost)}
       </h2>
-    </div>
+    </Form>
   );
 };
 
