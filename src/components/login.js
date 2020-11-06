@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+//import { Fragment } from "react";
 import Auth from '../constants/auth';
 
 const auth = new Auth();
@@ -17,9 +18,10 @@ const Login = (props) => {
         }) 
   })
     return (
+      
       <div>
         <button onClick={loginHandle}>Login</button>
-      </div>
+      </div> 
     );
   
 }

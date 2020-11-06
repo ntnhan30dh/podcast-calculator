@@ -10,21 +10,20 @@ const Calculator = () => {
   const aReach = new Reach();
   const payment = new Payment();
 
-  // const payments = [
-  //   { key: "cpm", value: "cpm", text: "CPM" },
-  //   { key: "cpa", value: "cpa", text: "CPA" },
-  // ];
-  // const format = [
-  //   { key: "Host-read", value: "Host-read", text: "Host-read" },
-  //   { key: "pre-recorded", value: "pre-recorded", text: "pre-recorded" },
-  // ];
-
-  let [region, setRegion] = useState(undefined);
-  let [country, setCountry] = useState(undefined);
+  let [region, setRegion] = useState(
+    localStorage.getItem("region") ? localStorage.getItem("region") : undefined
+  );
+  let [options] = useState(countryList.regions());
+  let [country, setCountry] = useState(
+    localStorage.getItem("country")
+      ? localStorage.getItem("country")
+      : undefined
+  );
   let [reach, setReach] = useState(undefined);
   let [paymentModel, setPaymentModel] = useState(undefined);
   let [adFormat, setAdFormat] = useState(undefined);
   let [spot, setSpot] = useState(undefined);
+  let [spotKeyDown, setSpotKeyDown] = useState(undefined);
   let [isChecking, setIsChecking] = useState(undefined);
 
   let paymentAtr =
@@ -36,20 +35,53 @@ const Calculator = () => {
   useEffect(() => {
     if (spot) {
       setIsChecking(true);
+      
     }
+    setSpotKeyDown(undefined)
   }, [spot]);
 
-  useEffect(() => {
-    setCountry(undefined);
-  }, [region]);
+  // useEffect(() => {
+  //   setCountry(undefined);
+  // }, [region]);
+
 
   const formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "EUR",
-    minimumFractionDigits: 2,
+    maximumFractionDigits: 0, 
+    minimumFractionDigits: 0, 
   });
+
+  const handleSetRegion = (value) => {
+    setRegion(value);
+    localStorage.setItem("region", value);
+    setCountry("");
+  };
+
+  const handleSetCountry = (value) => {
+    setCountry(value);
+    localStorage.setItem("country", value);
+  };
+
+  const handleSpotKeyDown =(evt)=>{
+    evt.key === 'e' && evt.preventDefault()
+    setSpotKeyDown(evt.key)
+  }
+
+  const reset = () => {
+    setRegion("");
+    setCountry("");
+    setReach("");
+    setPaymentModel(undefined);
+    setAdFormat(undefined);
+    setSpot("");
+    setIsChecking(undefined);
+    setSpotKeyDown(undefined)
+    localStorage.removeItem("region");
+    localStorage.removeItem("country");
+  };
   return (
-    <Form>
+    <Form >
       <div className="contentWrapper">
         <div className="inputFlield">
           <h3> Region</h3>
@@ -58,12 +90,13 @@ const Calculator = () => {
             fluid
             search
             selection
-            options={countryList.regions()}
-            // onChange={action}
-            onChange={(e, { value }) => setRegion(value)}
+            options={options}
+            onChange={(e, { value }) => handleSetRegion(value)}
+            defaultValue={region}
+            value={region}
           />
           {isChecking && !region && (
-            <Label style={{ color: "red" }} basic color="red" pointing="left">
+            <Label style={{ color: "red" }} basic color="red" pointing="above">
               please choose region
             </Label>
           )}
@@ -76,27 +109,17 @@ const Calculator = () => {
               search
               selection
               options={countryList.countries(region)}
-              onChange={(e, { value }) => setCountry(value)}
+              onChange={(e, { value }) => handleSetCountry(value)}
+              defaultValue={country}
+              value={country}
             />
           )}
           {region && isChecking && !country && (
-            <Label style={{ color: "red" }} basic color="red" pointing="left">
+            <Label style={{ color: "red" }} basic color="red" pointing="above">
               please choose country
             </Label>
           )}
           <h3>Payment model</h3>
-          {/* <h4>{paymentModel}</h4> */}
-          {/* <h3>Payment number</h3> */}
-          {/* <h4>
-        {country && paymentModel && payment.getPayment(paymentModel)[country]}
-      </h4> */}
-          {/* <Dropdown
-        placeholder="Payment model"
-        // fluid
-        selection
-        options={payments}
-        onChange={(e, { value }) => setPaymentModel(value)}
-      /> */}
           <div className="radios">
             <Form.Field>
               <Radio
@@ -120,21 +143,11 @@ const Calculator = () => {
             </Form.Field>
           </div>
           {isChecking && !paymentModel && (
-            <Label style={{ color: "red" }} basic color="red" pointing="left">
+            <Label style={{ color: "red" }} basic color="red" pointing="above">
               please choose Payment model
             </Label>
           )}
           <h3>Ad format</h3>
-          {/* <h4>{adFormat}</h4> */}
-          {/* <Dropdown
-        placeholder="Ad format"
-        fluid
-        selection
-        options={format}
-        onChange={(e, { value }) =>
-          value === "Host-read" ? setAdFormat(1) : setAdFormat(0.8)
-        }
-      /> */}
           <div className="radios">
             <Form.Field>
               <Radio
@@ -158,45 +171,56 @@ const Calculator = () => {
             </Form.Field>
           </div>
           {isChecking && !adFormat && (
-            <Label style={{ color: "red" }} basic color="red" pointing="left">
+            <Label style={{ color: "red" }} basic color="red" pointing="above">
               please choose Ad format
             </Label>
           )}
 
-          {paymentModel === "cpm" && <h3>Reach</h3>}
+          {paymentModel === "cpm" && <h3>Reach Number</h3>}
           {/* <h4>{reach}</h4> */}
           {paymentModel === "cpm" && (
             <Input
               fluid
               type="number"
               onChange={(e, { value }) => setReach(value)}
+              value={reach}
+              placeholder="1000"
             />
           )}
           {!/^[0-9.]*$/.test(reach) && reach && (
-            <Label basic color="red" pointing="left">
+            <Label basic color="red" pointing="above">
               Please enter a number
             </Label>
           )}
           {isChecking && !reach && paymentModel === "cpm" && (
-            <Label style={{ color: "red" }} basic color="red" pointing="left">
+            <Label style={{ color: "red" }} basic color="red" pointing="above">
               please enter Reach
             </Label>
           )}
 
           <h3>Number of spots</h3>
-          {/* <h4>{spot}</h4> */}
+          {/* <h3>{spot}</h3>
+          <h3>{spotKeyDown}</h3> */}
           {/* <Input type='number' onChange={(e, { value }) => handelSetSpot(value)} /> */}
           <Input
             //inputmode="numeric" pattern="[0-9]*"
             fluid
             type="number"
+            pattern="[0-9]*"
+            onKeyDown={ (evt) => handleSpotKeyDown(evt)  }
             onChange={(e, { value }) => setSpot(value)}
+            value={spot}
+            placeholder="1000"
+
           />
-          {!/^\d+$/.test(spot) && spot && (
-            <Label basic color="red" pointing="left">
+          {!/^\d+$/.test(spot)&&!/^\d+$/.test(spotKeyDown) && spotKeyDown &&(spotKeyDown!=='Backspace')&& (
+            <Label basic color="red" pointing="above">
               Please enter a valid number
             </Label>
           )}
+          <div className="buttonWrap">
+            <button onClick={reset}>reset</button>
+          </div>
         </div>
         <div className="result">
           {paymentModel === "cpm" && <h1> AVERAGE LISTENERS</h1>}
@@ -224,13 +248,16 @@ const Calculator = () => {
 
           <h1>
             ESTIMATED COST
-            <h2>
               {country &&
                 paymentModel &&
                 spot &&
                 adFormat &&
-                formatter.format(cost)}
+            <h2>
+                {formatter.format(cost)}
+            <span>.{(Math.round(cost%1*100)<10)&&0}{Math.round(cost%1*100)}</span>
             </h2>
+                }
+                
           </h1>
         </div>
       </div>

@@ -4,7 +4,7 @@ import Login from "./components/login";
 import Logout from "./components/logout";
 import Auth from "./constants/auth";
 
-import logo from './images/logo.png'
+import logo from "./images/logo.png";
 
 import "semantic-ui-css/semantic.min.css";
 import "./App.scss";
@@ -19,19 +19,35 @@ const App = () => {
 
   return (
     <Fragment className="App">
-      {!isAuthenticated && <Login setLoginState={setLoginState} />}
+      {!isAuthenticated && (
+        <div className="wrap">
+          <header className="header">
+            <div className="left">
+              <div className="leftWrapper">
+                <div className="top">
+                  <img src={logo} alt="logo" />
+                  Podcast Cost Calculator
+                </div>
+                <div className="bottom">
+                  <Login setLoginState={setLoginState} />
+                </div>
+              </div>
+            </div>
+          </header>
+        </div>
+      )}
       {isAuthenticated && (
         <div className="wrap">
           <header className="header">
             <div className="left">
               <div className="leftWrapper">
-              <div className="top">
-                  <img src={logo} alt="logo"/>
-                Podcast Cost Calculator
-              </div>
-              <div className="bottom">
-              <Logout setLoginState={setLoginState} />
-              </div>
+                <div className="top">
+                  <img src={logo} alt="logo" />
+                  Podcast Cost Calculator
+                </div>
+                <div className="bottom">
+                  <Logout setLoginState={setLoginState} />
+                </div>
               </div>
             </div>
           </header>
