@@ -87,7 +87,9 @@ body {
   .left {
     height: 72px;
     background-color: #d61f26;
-    max-width: 268px;
+    max-width: 20%;
+    min-width: 268px;
+
     text-align: right;
     display: flex;
     flex-direction: column;
@@ -146,16 +148,17 @@ body {
   // overflow-y: hidden;
   .inputFlield {
     flex: 0 0 auto;
-    width: 268px;
-    //  min-width: 268px;
+    width: 20%;
+    min-width: 268px;
     //  height: 900px;
     display: block;
     overflow: auto;
 
     background-color: #222d33;
-    padding: 20px;
+    padding: 20px 2%;
     @media screen and (max-width: 600px) {
       width: auto;
+      min-width: auto;
     }
 
     h3 {

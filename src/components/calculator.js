@@ -30,7 +30,7 @@ const Calculator = () => {
     paymentModel === "cpa"
       ? payment.getPayment(paymentModel)[country]
       : payment.getPayment(paymentModel)[country] * reach * 0.001;
-  let cost = spot * paymentAtr * adFormat;
+  let cost = spot? spot * (paymentAtr * adFormat):0;
 
   useEffect(() => {
     if (spot) {
@@ -182,7 +182,7 @@ const Calculator = () => {
             <Input
               fluid
               type="number"
-              onChange={(e, { value }) => setReach(value)}
+              onChange={(e, { value }) =>  value >= 0 ?setReach(value):setReach("")}
               value={reach}
               placeholder="1000"
             />
@@ -208,10 +208,9 @@ const Calculator = () => {
             type="number"
             pattern="[0-9]*"
             onKeyDown={ (evt) => handleSpotKeyDown(evt)  }
-            onChange={(e, { value }) => setSpot(value)}
+            onChange={(e, { value }) =>  value >= 0 ?setSpot(value):setSpot("") }
             value={spot}
             placeholder="1000"
-
           />
           {!/^\d+$/.test(spot)&&!/^\d+$/.test(spotKeyDown) && spotKeyDown &&(spotKeyDown!=='Backspace')&& (
             <Label basic color="red" pointing="above">
@@ -219,7 +218,7 @@ const Calculator = () => {
             </Label>
           )}
           <div className="buttonWrap">
-            <button onClick={reset}>reset</button>
+            <button  type="reset" onClick={reset}>reset</button>
           </div>
         </div>
         <div className="result">
@@ -248,15 +247,15 @@ const Calculator = () => {
 
           <h1>
             ESTIMATED COST
-              {country &&
+              {/* {country &&
                 paymentModel &&
                 spot &&
-                adFormat &&
+                adFormat && */}
             <h2>
                 {formatter.format(cost)}
             <span>.{(Math.round(cost%1*100)<10)&&0}{Math.round(cost%1*100)}</span>
             </h2>
-                }
+                {/* } */}
                 
           </h1>
         </div>
