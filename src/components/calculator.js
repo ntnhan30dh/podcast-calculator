@@ -9,6 +9,11 @@ const Calculator = () => {
   const countryList = new CountryList();
   const aReach = new Reach();
   const payment = new Payment();
+  const [state, setState] = useState({});
+
+  const handleChange = e =>{
+    setState({...state, [e.target.name]:e.target.value >= 0 ?e.target.value:""})
+  }
 
   let [region, setRegion] = useState(
     localStorage.getItem("region") ? localStorage.getItem("region") : undefined
@@ -19,26 +24,26 @@ const Calculator = () => {
       ? localStorage.getItem("country")
       : undefined
   );
-  let [reach, setReach] = useState(undefined);
+  //let [reach, setReach] = useState(undefined);
   let [paymentModel, setPaymentModel] = useState(undefined);
   let [adFormat, setAdFormat] = useState(undefined);
-  let [spot, setSpot] = useState(undefined);
+ // let [spot, setSpot] = useState(undefined);
   let [spotKeyDown, setSpotKeyDown] = useState(undefined);
   let [isChecking, setIsChecking] = useState(undefined);
 
   let paymentAtr =
     paymentModel === "cpa"
       ? payment.getPayment(paymentModel)[country]
-      : payment.getPayment(paymentModel)[country] * reach * 0.001;
-  let cost = spot? spot * (paymentAtr * adFormat):0;
+      : payment.getPayment(paymentModel)[country] * state.reach * 0.001;
+  let cost = state.spot? state.spot * (paymentAtr * adFormat):0;
 
   useEffect(() => {
-    if (spot) {
+    if (state.spot) {
       setIsChecking(true);
       
     }
     setSpotKeyDown(undefined)
-  }, [spot]);
+  }, [state.spot]);
 
   // useEffect(() => {
   //   setCountry(undefined);
@@ -69,12 +74,13 @@ const Calculator = () => {
   }
 
   const reset = () => {
+    setState({})
     setRegion("");
     setCountry("");
-    setReach("");
+    //setReach("");
     setPaymentModel(undefined);
     setAdFormat(undefined);
-    setSpot("");
+  //  setSpot("");
     setIsChecking(undefined);
     setSpotKeyDown(undefined)
     localStorage.removeItem("region");
@@ -177,22 +183,24 @@ const Calculator = () => {
           )}
 
           {paymentModel === "cpm" && <h3>Reach Number</h3>}
-          {/* <h4>{reach}</h4> */}
+          {/* <h4>{state.reach}</h4> */}
           {paymentModel === "cpm" && (
             <Input
               fluid
               type="number"
-              onChange={(e, { value }) =>  value >= 0 ?setReach(value):setReach("")}
-              value={reach}
+              name="reach"
+             // onChange={(e, { value }) =>  value >= 0 ?setReach(value):setReach("")}
+              onChange={handleChange}
+              value={state.reach}
               placeholder="1000"
             />
           )}
-          {!/^[0-9.]*$/.test(reach) && reach && (
+          {!/^[0-9.]*$/.test(state.reach) && state.reach && (
             <Label basic color="red" pointing="above">
               Please enter a number
             </Label>
           )}
-          {isChecking && !reach && paymentModel === "cpm" && (
+          {isChecking && !state.reach && paymentModel === "cpm" && (
             <Label style={{ color: "red" }} basic color="red" pointing="above">
               please enter Reach
             </Label>
@@ -208,11 +216,13 @@ const Calculator = () => {
             type="number"
             pattern="[0-9]*"
             onKeyDown={ (evt) => handleSpotKeyDown(evt)  }
-            onChange={(e, { value }) =>  value >= 0 ?setSpot(value):setSpot("") }
-            value={spot}
+            //onChange={(e, { value }) =>  value >= 0 ?setSpot(value):setSpot("") }
+            onChange={handleChange}
+            value={state.spot}
             placeholder="1000"
+            name="spot"
           />
-          {!/^\d+$/.test(spot)&&!/^\d+$/.test(spotKeyDown) && spotKeyDown &&(spotKeyDown!=='Backspace')&& (
+          {!/^\d+$/.test(state.spot)&&!/^\d+$/.test(spotKeyDown) && spotKeyDown &&(spotKeyDown!=='Backspace')&& (
             <Label basic color="red" pointing="above">
               Please enter a valid number
             </Label>
